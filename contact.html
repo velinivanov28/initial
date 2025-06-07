@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Контакти | Малки ремонти</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
   <header>
@@ -63,5 +64,15 @@
   </footer>
 
   <script src="js/script.js"></script>
-</body>
+  <script>
+    document.getElementById("contact-form").addEventListener("submit", function (e) {
+        const recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+            e.preventDefault();
+            alert("Моля, потвърдете, че не сте робот чрез reCAPTCHA.");
+        }
+    });
+   </script>
+
+  </body>
 </html>
