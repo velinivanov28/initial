@@ -62,7 +62,7 @@ document.getElementById("contact-form").addEventListener("submit", function (e) 
   e.preventDefault();
 
   grecaptcha.ready(function () {
-    grecaptcha.execute('YOUR_SITE_KEY', { action: 'submit' }).then(function (token) {
+    grecaptcha.execute('6LfnklgrAAAAAM_dy0hRT9jX3E9H5bdwNKljxo9c', { action: 'submit' }).then(function (token) {
       const form = e.target;
       const formData = new FormData(form);
       formData.append("g-recaptcha-response", token);
