@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Send email
-    $to = "info@malkiremonti.bg";
+    $to = "veil_side28@abv.bg";
     $subject = "Съобщение от уебсайта";
     $body = "Име: $name\nИмейл: $email\n\nСъобщение:\n$message";
     $headers = "From: $name <$email>";

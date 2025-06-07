@@ -2,13 +2,13 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8">
-  <title>Контакти | Малки ремонти</title>
+  <title>Контакти | Ремонти</title>
   <link rel="stylesheet" href="css/style.css">
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
-    <div class="logo"><a href="index.html">Малки ремонти</a></div>
+    <div class="logo"><a href="index.html">Ремонти</a></div>
     <nav>
       <ul>
         <li><a href="index.html">Начало</a></li>
@@ -23,56 +23,50 @@
     <section class="contact">
       <h1>Свържете се с нас</h1>
       <p><strong>Телефон:</strong> +359 888 123 456</p>
-      <p><strong>Имейл:</strong> info@malkiremonti.bg</p>
+      <p><strong>Имейл:</strong> veil_side28@abv.bg</p>
       <p><strong>Адрес:</strong> бул. България 100, София</p>
 
-    <form id="contact-form" action="contact.php" method="POST">
+      <form id="contact-form" action="contact.php" method="POST">
         <label for="name">Име:</label>
         <input type="text" id="name" name="name" required>
-    
+
         <label for="email">Имейл:</label>
         <input type="email" id="email" name="email" required>
-    
+
         <label for="message">Съобщение:</label>
         <textarea id="message" name="message" rows="5" required></textarea>
-    
-        <div class="g-recaptcha" data-sitekey="6LfnklgrAAAAAM_dy0hRT9jX3E9H5bdwNKljxo9c"></div>
-    
+
+        <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY_HERE"></div>
+
         <button type="submit">Изпрати</button>
-    </form>
+      </form>
 
-<!-- Show message from PHP -->
-<?php if (isset($_GET['msg'])): ?>
-  <p class="form-response"><?= htmlspecialchars($_GET['msg']) ?></p>
-<?php endif; ?>
-
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
-
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
+      <?php if (isset($_GET['msg'])): ?>
+        <p class="form-response"><?= htmlspecialchars($_GET['msg']) ?></p>
+      <?php endif; ?>
 
       <div class="map">
-        <!-- Optional: Embed Google Map -->
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2934.0031748513575!2d23.377277976925683!3d42.66128811601645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa867d41b725c7%3A0x113d58d710e570c5!2sPoligona%2C%20Boulevard%20%22Tsarigradsko%20shose%22%20115%D0%93%2C%201784%20Sofia!5e0!3m2!1sen!2sbg!4v1749283284866!5m2!1sen!2sbg" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2934.491089114204!2d23.302869815479864!3d42.67242717916745!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa85a01e939f63%3A0xc0532b5fbd509fd3!2sBulgaria%20Blvd%20100%2C%201615%20g.k.%20Manastirski%20Livadi%2C%20Sofia!5e0!3m2!1sen!2sbg!4v1686058354483!5m2!1sen!2sbg"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
       </div>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 Малки ремонти. Всички права запазени.</p>
+    <p>&copy; 2025 Ремонти. Всички права запазени.</p>
   </footer>
 
-  <script src="js/script.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script>
-    document.getElementById("contact-form").addEventListener("submit", function (e) {
-        const recaptchaResponse = grecaptcha.getResponse();
-        if (!recaptchaResponse) {
-            e.preventDefault();
-            alert("Моля, потвърдете, че не сте робот чрез reCAPTCHA.");
-        }
+    document.getElementById("contact-form").addEventListener("submit", function(e) {
+      const recaptchaResponse = grecaptcha.getResponse();
+      if (!recaptchaResponse) {
+        e.preventDefault();
+        alert("Моля, потвърдете, че не сте робот чрез reCAPTCHA.");
+      }
     });
-   </script>
-
-  </body>
+  </script>
+</body>
 </html>
