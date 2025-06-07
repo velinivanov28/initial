@@ -27,8 +27,12 @@
       <p><strong>Адрес:</strong> бул. България 100, София</p>
 
     <form id="contact-form" method="POST" action="/api/contact">
-        <!-- Your fields -->
+        <input type="text" name="name" required placeholder="Вашето име">
+        <input type="email" name="email" required placeholder="Имейл">
+        <textarea name="message" required placeholder="Вашето съобщение"></textarea>
+    
         <div class="g-recaptcha" data-sitekey="6LfnklgrAAAAAM_dy0hRT9jX3E9H5bdwNKljxo9c"></div>
+    
         <button type="submit">Изпрати</button>
     </form>
 
