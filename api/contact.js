@@ -5,7 +5,7 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
-
+  
   const { 'g-recaptcha-response': token } = req.body;
 
   // 1. Validate fields
