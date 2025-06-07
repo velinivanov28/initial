@@ -64,3 +64,13 @@ footer {
   text-align: center;
   padding: 20px;
 }
+
+.form-response {
+  background-color: #e6ffe6;
+  border: 1px solid #00a400;
+  color: #006600;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 4px;
+  font-weight: bold;
+}

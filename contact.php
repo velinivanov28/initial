@@ -1,43 +1,40 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Validate form fields
     $name    = strip_tags(trim($_POST["name"]));
     $email   = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
     $message = trim($_POST["message"]);
-    $captcha = $_POST["g-recaptcha-response"];
+    $captcha = $_POST["g-recaptcha-response"] ?? '';
 
-    if (empty($name) || empty($message) || !filter_var($email, FILTER_VALIDATE_EMAIL) || empty($captcha)) {
-        http_response_code(400);
-        echo "Моля, попълнете всички полета и потвърдете, че не сте робот.";
+    if (!$name || !$email || !$message || !$captcha || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        header("Location: contact.html?msg=" . urlencode("Моля, попълнете всички полета правилно."));
         exit;
     }
 
-    // Validate reCAPTCHA
-    $secretKey = "6LfnklgrAAAAALTdNdcY90gGWnsHzfuN1dxUpOPE"; // Replace with your secret key
-    $verifyURL = "https://www.google.com/recaptcha/api/siteverify";
-    
-    $response = file_get_contents($verifyURL . "?secret=$secretKey&response=$captcha");
-    $responseKeys = json_decode($response, true);
+    // Validate reCAPTCHA with Google
+    $secretKey = "6LfnklgrAAAAALTdNdcY90gGWnsHzfuN1dxUpOPE";
+    $response = file_get_contents(
+        "https://www.google.com/recaptcha/api/siteverify?secret={$secretKey}&response={$captcha}"
+    );
+    $result = json_decode($response, true);
 
-    if (!$responseKeys["success"]) {
-        http_response_code(400);
-        echo "reCAPTCHA не е преминал. Моля, опитайте отново.";
+    if (!isset($result["success"]) || $result["success"] !== true) {
+        header("Location: contact.html?msg=" . urlencode("reCAPTCHA не беше успешно. Моля, опитайте отново."));
         exit;
     }
 
-    // Proceed with sending email
-    $recipient = "info@malkiremonti.bg"; // your email
-    $subject = "Ново съобщение от $name";
-    $email_content = "Име: $name\nИмейл: $email\n\nСъобщение:\n$message\n";
+    // Send email
+    $to = "info@malkiremonti.bg";
+    $subject = "Съобщение от уебсайта";
+    $body = "Име: $name\nИмейл: $email\n\nСъобщение:\n$message";
     $headers = "From: $name <$email>";
 
-    if (mail($recipient, $subject, $email_content, $headers)) {
-        echo "Съобщението беше изпратено успешно.";
+    if (mail($to, $subject, $body, $headers)) {
+        header("Location: contact.html?msg=" . urlencode("Съобщението беше изпратено успешно."));
     } else {
-        http_response_code(500);
-        echo "Грешка при изпращането. Моля, опитайте по-късно.";
+        header("Location: contact.html?msg=" . urlencode("Възникна грешка при изпращането."));
     }
+    exit;
 } else {
-    http_response_code(403);
-    echo "Недопустим метод на заявка.";
+    header("Location: contact.html");
+    exit;
 }
