@@ -27,14 +27,14 @@
       <p><strong>Адрес:</strong> бул. България 100, София</p>
 
     <form id="contact-form" method="POST" action="/api/contact">
-        <input type="text" name="name" required placeholder="Вашето име">
-        <input type="email" name="email" required placeholder="Имейл">
-        <textarea name="message" required placeholder="Вашето съобщение"></textarea>
-    
-        <div class="g-recaptcha" data-sitekey="6LfnklgrAAAAAM_dy0hRT9jX3E9H5bdwNKljxo9c"></div>
-    
+        <input type="text" name="name" required />
+        <input type="email" name="email" required />
+        <textarea name="message" required></textarea>
         <button type="submit">Изпрати</button>
     </form>
+
+<script src="https://www.google.com/recaptcha/api.js?render=6Lc6wFgrAAAAAOuL1qgYzgg1Gxx1qtQyJgEcoY2k"></script>
+
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
@@ -62,7 +62,7 @@ document.getElementById("contact-form").addEventListener("submit", function (e) 
   e.preventDefault();
 
   grecaptcha.ready(function () {
-    grecaptcha.execute('6LfnklgrAAAAAM_dy0hRT9jX3E9H5bdwNKljxo9c', { action: 'submit' }).then(function (token) {
+    grecaptcha.execute('6Lc6wFgrAAAAAOuL1qgYzgg1Gxx1qtQyJgEcoY2k', { action: 'submit' }).then(function (token) {
       const form = e.target;
       const formData = new FormData(form);
       formData.append("g-recaptcha-response", token);
@@ -71,16 +71,17 @@ document.getElementById("contact-form").addEventListener("submit", function (e) 
         method: "POST",
         body: formData,
       })
-      .then(res => res.json())
-      .then(data => {
-        alert(data.message || "Успешно изпратено!");
-        form.reset();
-      })
-      .catch(err => alert("Грешка при изпращане."));
+        .then((res) => res.json())
+        .then((data) => {
+          alert(data.message || "Успешно изпратено!");
+          form.reset();
+        })
+        .catch(() => alert("Грешка при изпращане."));
     });
   });
 });
 </script>
+
 
 </body>
 </html>
