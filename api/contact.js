@@ -1,42 +1,37 @@
-// /api/contact.js
 const axios = require('axios');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
-  
-  const { 'g-recaptcha-response': token } = req.body;
 
-  // 1. Validate fields
+  const { name, email, message, 'g-recaptcha-response': token } = req.body;
+
   if (!name || !email || !message || !token) {
-    return res.status(400).json({ message: 'All fields and reCAPTCHA are required.' });
+    return res.status(400).json({ message: 'Всички полета и reCAPTCHA са задължителни.' });
   }
 
-  // 2. Verify reCAPTCHA
-  const secret = process.env.RECAPTCHA_SECRET_KEY;
   try {
-    const verify = await axios.post(
-      `https://www.google.com/recaptcha/api/siteverify`,
-      null,
-      {
-        params: {
-          secret,
-          response: token,
-        },
-      }
-    );
+    // ✅ Verify token with Google
+    const verifyResponse = await axios.post(`https://www.google.com/recaptcha/api/siteverify`, null, {
+      params: {
+        secret: process.env.RECAPTCHA_SECRET_KEY,
+        response: token,
+      },
+    });
 
-    if (!verify.data.success) {
-      return res.status(400).json({ message: 'reCAPTCHA verification failed.' });
+    const { success, score, action } = verifyResponse.data;
+
+    if (!success || score < 0.5 || action !== 'contact') {
+      return res.status(400).json({ message: 'reCAPTCHA validation failed. Моля, опитайте отново.' });
     }
+
+    // ✅ Passed reCAPTCHA – handle the message
+    console.log('📬 New form:', { name, email, message });
+
+    return res.status(200).json({ message: 'Съобщението беше изпратено успешно!' });
   } catch (err) {
-    return res.status(500).json({ message: 'Error validating reCAPTCHA.' });
+    console.error('reCAPTCHA error:', err.message);
+    return res.status(500).json({ message: 'Сървърна грешка при reCAPTCHA проверка.' });
   }
-
-  // 3. Send email or store (optional)
-  // For example: use Nodemailer here to send email
-  console.log('New contact form submission:', { name, email, message });
-
-  return res.status(200).json({ message: 'Message sent successfully!' });
 };
